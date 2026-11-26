@@ -2,7 +2,10 @@
 
 from abc import ABC, abstractmethod
 from datetime import date, datetime
+from typing import Any
 from uuid import UUID, uuid4
+
+from bujo.exceptions import DateInvalide, NomVide
 
 
 class Entree(ABC):
@@ -42,7 +45,7 @@ class Entree(ABC):
     def nom(self, valeur: str) -> None:
         """Definit le nom apres verification qu'il n'est pas vide."""
         if not isinstance(valeur, str) or not valeur.strip():
-            raise ValueError(
+            raise NomVide(
                 "Le nom d'une entree ne peut pas etre vide."
             )
         self._nom = valeur.strip()
@@ -66,7 +69,7 @@ class Entree(ABC):
     def date_log(self, valeur: date) -> None:
         """Definit la date du log apres verification de son type."""
         if not isinstance(valeur, date) or isinstance(valeur, datetime):
-            raise ValueError(
+            raise DateInvalide(
                 "La date du log doit etre une instance de date valide."
             )
         self._date_log = valeur
@@ -74,3 +77,15 @@ class Entree(ABC):
     @abstractmethod
     def symbole(self) -> str:
         """Retourne le symbole de rapid logging associe a l'entree."""
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialise les attributs communs de l'entree en dictionnaire."""
+        return {
+            "type": type(self).__name__,
+            "identifiant": str(self.identifiant),
+            "date_creation": self.date_creation.isoformat(),
+            "nom": self.nom,
+            "description": self.description,
+            "date_log": self.date_log.isoformat(),
+            "symbole": self.symbole(),
+        }
