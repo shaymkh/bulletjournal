@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 79
+# D401 : regle de grammaire anglaise (mode imperatif), inadaptee au francais
+extend-ignore = D401
+exclude = .git,__pycache__,docs
