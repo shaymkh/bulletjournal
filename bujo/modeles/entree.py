@@ -14,7 +14,7 @@ class Entree(ABC):
         description: str = "",
         date_log: date | None = None,
     ) -> None:
-        """Initialise une entree avec un identifiant unique et ses attributs."""
+        """Initialise une entree avec un identifiant unique."""
         self._identifiant: UUID = uuid4()
         self._date_creation: datetime = datetime.now()
         self.nom = nom
@@ -40,7 +40,7 @@ class Entree(ABC):
 
     @nom.setter
     def nom(self, valeur: str) -> None:
-        """Definit le nom de l'entree apres verification qu'il n'est pas vide."""
+        """Definit le nom apres verification qu'il n'est pas vide."""
         if not isinstance(valeur, str) or not valeur.strip():
             raise ValueError(
                 "Le nom d'une entree ne peut pas etre vide."
